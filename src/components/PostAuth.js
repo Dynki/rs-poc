@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Switch } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/react-hooks';
-import { useAuth0 } from "../react-auth0-spa";
 
 import clientFactory from '../utils/clientFactory';
 
 import Drivers from './Drivers';
 import Profile from './Profile';
 import PrivateRoute from './PrivateRoute';
+import authContext from '../context/authContext';
 
 function usePrevious(value) {
     const ref = useRef();
@@ -18,19 +18,15 @@ function usePrevious(value) {
 }
 
 const PostAuth = () => {
-    const { getIdTokenClaims, loading } = useAuth0();
+    // const { getIdTokenClaims, loading } = useAuth0();
+    const { idToken, idTokenPayload } = useContext(authContext);
+
     const [ currentRole, setCurrentRole ] = useState(undefined);
     const previousRole = usePrevious(currentRole);
     const [client, setClient] = useState(undefined);
-    const [token, setToken] = useState(null);
     
     // Store the token and create client if required.
     useEffect(() => {
-        async function getToken() {
-            const token =  await getIdTokenClaims();
-            setToken(token);
-            return token;
-        }
 
         /**
          * Make a client if:
@@ -38,17 +34,16 @@ const PostAuth = () => {
          *      B: currentRole has changed.
          */        
         async function makeClient() {
-            const token =  await getToken();
 
-            if (token) {
+            if (idToken) {
                 if (!client) {
-                        const hasuraClaims = token['https://hasura.io/jwt/claims']; 
+                        const hasuraClaims = idTokenPayload['https://hasura.io/jwt/claims']; 
                         const defaultRole = hasuraClaims ? hasuraClaims['x-hasura-default-role'] : undefined;
                         setCurrentRole(defaultRole);
 
                         // Create client with role, if role is undefined 
                         // the 'x-hasura-default-role' on JWT token will be used by request.
-                        setClient(clientFactory(token.__raw, defaultRole));
+                        setClient(clientFactory(idToken, defaultRole));
                 } else {
                     if (previousRole !== currentRole) {
                         /**
@@ -59,18 +54,16 @@ const PostAuth = () => {
 
                         // Create client with role, if role is undefined 
                         // the 'x-hasura-default-role' on JWT token will be used by request.
-                        setClient(clientFactory(token.__raw, currentRole));
+                        setClient(clientFactory(idToken, currentRole));
                     }
                 }
             }
         }
 
-        if (!loading) {
-            makeClient();
-        }
-    }, [ currentRole, client, loading, token, getIdTokenClaims, previousRole ]);
+        makeClient();
+    }, [ currentRole, client, idToken, idTokenPayload, previousRole ]);
 
-    if (loading || !client) {
+    if (!client) {
         return <div>Loading...</div>;
     }
 

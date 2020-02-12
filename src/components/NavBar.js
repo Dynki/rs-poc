@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from 'react-router-dom';
-import { useAuth0 } from "../react-auth0-spa";
+import authContext from '../context/authContext';
 
 const NavBar = () => {
-    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
+    const { isAuthenticated, login, logout } = useContext(authContext);
 
     return (
         <div>
             {!isAuthenticated && (
-                <button onClick={() => loginWithRedirect({})}>Log in</button>
+                <button onClick={() => login({})}>Log in</button>
             )}
 
             {isAuthenticated && <button onClick={() => logout()}>Log out</button>}
