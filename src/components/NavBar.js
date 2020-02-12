@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAuth0 } from "../react-auth0-spa";
 
 const NavBar = () => {
-    const { isAuthenticated, loginWithPopup, logout } = useAuth0();
+    const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 
     return (
         <div>
             {!isAuthenticated && (
-                <button onClick={() => loginWithPopup({})}>Log in</button>
+                <button onClick={() => loginWithRedirect({})}>Log in</button>
             )}
 
             {isAuthenticated && <button onClick={() => logout()}>Log out</button>}

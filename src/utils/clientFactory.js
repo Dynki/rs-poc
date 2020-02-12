@@ -7,15 +7,26 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from './constants';
 
-const client = token => {
+const client = (token, role) => {
 
     const getHeaders = token => {
         const headers = {};
         if (token) {
-          headers.Authorization = `Bearer ${token}`;
+            headers.Authorization = `Bearer ${token}`;
+
+            /**
+             * If you change the x-hasura-role header, in the client request, 
+             * it will make the request with that role, overwriting whatever was 
+             * set in the token (x-hasura-default-role), as long as the role
+             * is in x-hasura-allowed-roles array
+             */
+            if (role) {
+                headers['x-hasura-role'] = role;
+            }
         }
+
         return headers;
-      };
+    };
 
     const wsLink = token => {
         return new WebSocketLink({
@@ -46,17 +57,12 @@ const client = token => {
         httpLink(token),
     )
 
-    console.log('client before')
-
-    const client = new ApolloClient({
+    let client = new ApolloClient({
         link,
         cache: new InMemoryCache()
     });
 
-    console.log('client after', client);
-
     return client;
 }
-
 
 export default client;
