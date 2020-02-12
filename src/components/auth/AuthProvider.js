@@ -112,7 +112,7 @@ export default class AuthProvider extends React.Component {
     localStorage.removeItem(storageKey);
     clearTimeout(this.tokenRenewalTimeout);
     this.lock.logout({
-      returnTo: returnTo
+      returnTo: 'https://dyn-rs-poc.herokuapp.com/'
     });
   };
 
