@@ -31,7 +31,7 @@ export default class AuthProvider extends React.Component {
         },
         auth: {
             responseType: 'token id_token',
-            redirectUrl: 'http://localhost:3000'
+            redirectUrl: 'https://dyn-rs-poc.herokuapp.com/'
         },
         autofocus: true
     });
