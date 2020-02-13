@@ -5,7 +5,6 @@ import { HttpLink } from 'apollo-link-http';
 import { split } from 'apollo-link';
 import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { GRAPHQL_URL, REALTIME_GRAPHQL_URL } from './constants';
 
 const client = (token, role) => {
 
@@ -33,7 +32,7 @@ const client = (token, role) => {
             connectionParams: () => {
                 return { headers: getHeaders(token) }
             },
-            uri: REALTIME_GRAPHQL_URL,
+            uri: process.env.REACT_APP_REALTIME_GRAPHQL_URL,
             options: {
                 reconnect: true
             }
@@ -42,7 +41,7 @@ const client = (token, role) => {
 
     const httpLink = token => {
         return new HttpLink({
-            uri: GRAPHQL_URL,
+            uri: process.env.REACT_APP_GRAPHQL_URL,
             headers: getHeaders(token)
         });
     }

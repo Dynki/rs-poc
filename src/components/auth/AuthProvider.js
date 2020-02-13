@@ -23,7 +23,6 @@ export default class AuthProvider extends React.Component {
     super(props);
     this.lock = new Auth0Lock(props.clientId, props.domain, {
         theme: {
-            // logo: 'https://rsconnect.com/wp-content/uploads/2015/07/RS-Connect2.png',
             primaryColor: '#2196F3'
         },
         languageDictionary: {
@@ -31,7 +30,7 @@ export default class AuthProvider extends React.Component {
         },
         auth: {
             responseType: 'token id_token',
-            redirectUrl: 'https://dyn-rs-poc.herokuapp.com/'
+            redirectUrl: process.env.REACT_APP_AUTH_REDIRECT_URL
         },
         autofocus: true
     });
@@ -107,12 +106,12 @@ export default class AuthProvider extends React.Component {
     this.lock.show();
   };
 
-  logout = returnTo => {
+  logout = () => {
     const { storageKey } = this.props;
     localStorage.removeItem(storageKey);
     clearTimeout(this.tokenRenewalTimeout);
     this.lock.logout({
-      returnTo: 'https://dyn-rs-poc.herokuapp.com/'
+      returnTo: process.env.REACT_APP_AUTH_REDIRECT_URL
     });
   };
 
@@ -140,6 +139,6 @@ export default class AuthProvider extends React.Component {
 
   render() {
     const { children } = this.props;
-    return <authContext.Provider value={this.state}>{children}</authContext.Provider>;
+    return <authContext.Provider data-testid="authprovider" value={this.state}>{children}</authContext.Provider>;
   }
 }

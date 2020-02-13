@@ -12,7 +12,7 @@ const GET_DRIVERS = gql`
     }
 `;
 
-const Drivers = () => {
+const Vehicles = () => {
     const { loading, error, data } = useQuery(GET_DRIVERS);
 
     if (loading) return 'Loading...';
@@ -20,7 +20,6 @@ const Drivers = () => {
   
     return (
         <div>
-            <label>dsaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</label>
             {data.drivers.map(d => {
                 return <div key={d.id}>{d.name}</div>
             })}
@@ -28,4 +27,4 @@ const Drivers = () => {
     )
 }
 
-export default Drivers;
+export default Vehicles;
