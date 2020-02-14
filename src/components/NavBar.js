@@ -47,7 +47,6 @@ const NavBar = () => {
     const { appState, dispatch } = useContext(appContext);
 
     const openMenu = () => {
-        console.log('Call open dispatch method')
         dispatch({ type: actions.OPEN_DRAWER });
     }
 
