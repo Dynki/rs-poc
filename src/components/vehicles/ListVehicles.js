@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import { 
     Checkbox, 
     Paper, 
@@ -7,17 +8,26 @@ import {
     TableCell, 
     TableContainer, 
     TableHead, 
-    TablePagination, 
     TableRow, 
     Typography 
-} from '@material-ui/core'
+} from '@material-ui/core';
 
-const ListVehicles = ({ data, onPageSizeChange, onRefreshData, pageSizes, total }) => {
+const useStyles = makeStyles(theme => ({
+    label: {
+        padding: '15px'
+    },
+    row: {
+        marginLeft: '12px;'
+    }
+}));
+
+const ListVehicles = ({ data }) => {
+    const classes = useStyles();
 
     return (
         !data ? null : 
         <Paper>
-            <Typography variant="subtitle1" id="tableTitle">
+            <Typography className={classes.label} variant="subtitle1" id="tableTitle">
                 All Vehicles
             </Typography>
             <TableContainer>
@@ -38,10 +48,9 @@ const ListVehicles = ({ data, onPageSizeChange, onRefreshData, pageSizes, total 
                     </TableHead>
                     <TableBody>
                         {data.map(row => (
-                        <TableRow hover key={row.id}>
+                        <TableRow hover key={row.id} >
                             <TableCell padding="checkbox">
-                                <Checkbox
-                                />
+                                <Checkbox className={classes.row}/>
                             </TableCell>
                             <TableCell>
                                 {row.name}
