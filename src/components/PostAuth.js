@@ -8,6 +8,7 @@ import Drivers from './Drivers';
 import Profile from './Profile';
 import PrivateRoute from './PrivateRoute';
 import authContext from '../context/authContext';
+import Vehicles from '../pages/Vehicles';
 
 function usePrevious(value) {
     const ref = useRef();
@@ -69,11 +70,12 @@ const PostAuth = () => {
 
     return (
         <ApolloProvider client={client}>
-            <button onClick={() => setCurrentRole('user')}>As user</button>
+            {/* <button onClick={() => setCurrentRole('user')}>As user</button>
             <button onClick={() => setCurrentRole('manager')}>As manager</button>
-            <label>Current Role: {currentRole}</label>
+            <label>Current Role: {currentRole}</label> */}
             <Switch>
                 <PrivateRoute path="/drivers" component={Drivers} />
+                <PrivateRoute path="/vehicles" component={Vehicles} />
                 <PrivateRoute path="/profile" component={Profile} />
             </Switch>
         </ApolloProvider>

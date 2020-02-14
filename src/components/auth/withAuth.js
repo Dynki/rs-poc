@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Consumer } from './context';
+import AuthContext from '../../context/authContext';
 
 export function withAuth(Component) {
   return function AuthComponent(props) {
-    return <Consumer>{auth => <Component {...props} auth={auth} />}</Consumer>;
+    return <AuthContext.Consumer>{auth => <Component {...props} auth={auth} />}</AuthContext.Consumer>;
   };
 }

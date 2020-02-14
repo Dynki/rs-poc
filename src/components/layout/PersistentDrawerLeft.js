@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
       overflowX: 'hidden',
       width: theme.spacing(7) + 1,
       [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
+        width: theme.spacing(8) + 1,
       },
     },
     toolbar: {
@@ -97,10 +97,6 @@ const PersistentDrawerLeft = ({ history }) => {
     <div className={classes.root}>
     <Drawer
         variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: appState.drawerOpen,
-          [classes.drawerClose]: !appState.drawerOpen,
-        })}
         classes={{
           paper: clsx({
             [classes.drawerOpen]: appState.drawerOpen,
@@ -115,7 +111,7 @@ const PersistentDrawerLeft = ({ history }) => {
         </div>
         <Divider />
         <List>
-            <ListItem button onClick={() => navigate('/drivers')}>
+            <ListItem button onClick={() => navigate('/vehicles')}>
               <ListItemIcon><DriveEtaIcon/></ListItemIcon>
               <ListItemText primary={'Vehicles'} />
             </ListItem>
